@@ -4,7 +4,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes, Dispatcher
 import asyncio
 import os
 
-BOT_TOKEN = "BOT_TOKEN"
+BOT_TOKEN = "7514736786:AAE0V1_OodM7qnXTsOPnH1Dp0ev4V5q5Up0"
 bot = Bot(token=BOT_TOKEN)
 app = Flask(__name__)
 application = Application.builder().token(BOT_TOKEN).build()
