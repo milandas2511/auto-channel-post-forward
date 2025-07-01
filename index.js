@@ -54,7 +54,7 @@ bot.onText(/\/copy (.+)/, async (msg, match) => {
 });
 
 app.get("/webhook", async (req, res) => {
-  const url = `https://${req.get("host")}`;
+  const url = `https://${req.get("host")}/webhook`;
   const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/setWebhook?url=${url}`);
   const data = await response.json();
   console.log("Webhook Response:", data);
