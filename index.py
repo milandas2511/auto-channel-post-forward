@@ -2,6 +2,8 @@ from flask import Flask, request
 from telegram import Update, Bot
 from telegram.ext import Application, CommandHandler, ContextTypes
 import asyncio
+import requests
+import os
 
 BOT_TOKEN = "7514736786:AAE0V1_OodM7qnXTsOPnH1Dp0ev4V5q5Up0"
 bot = Bot(token=BOT_TOKEN)
@@ -80,8 +82,25 @@ async def start_copy(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_to_message_id=update.message.message_id
     )
 
+async def set_webhook(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if len(context.args) != 1:
+        await update.message.reply_text("⚠️ Usage: /webhook <your_url>")
+        return
+
+    webhook_url = context.args[0]
+    response = requests.get(
+        f"https://api.telegram.org/bot{BOT_TOKEN}/setWebhook",
+        params={"url": webhook_url}
+    )
+
+    if response.status_code == 200 and response.json().get("ok"):
+        await update.message.reply_text("✅ Webhook has been set successfully!")
+    else:
+        await update.message.reply_text("❌ Failed to set webhook.")
+
 application.add_handler(CommandHandler("start", start))
 application.add_handler(CommandHandler("copy", start_copy))
+application.add_handler(CommandHandler("webhook", set_webhook))
 
 @app.route("/", methods=["POST"])
 def webhook():
