@@ -2,7 +2,7 @@ import express from "express";
 import TelegramBot from "node-telegram-bot-api";
 import fetch from "node-fetch";
 
-const BOT_TOKEN = "7514736786:AAE0V1_OodM7qnXTsOPnH1Dp0ev4V5q5Up0";
+const BOT_TOKEN = "7514736786:AAGmonV4hG06vnkmwPC-gZFIFrCKrF5CX5k";
 const bot = new TelegramBot(BOT_TOKEN);
 const app = express();
 
