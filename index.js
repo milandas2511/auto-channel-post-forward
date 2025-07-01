@@ -54,11 +54,12 @@ bot.onText(/\/copy (.+)/, async (msg, match) => {
 });
 
 app.get("/webhook", async (req, res) => {
-  const url = `${req.protocol}://${req.get("host")}/webhook`;
+  const url = `https://${req.get("host")}`;
   const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/setWebhook?url=${url}`);
   const data = await response.json();
+  console.log("Webhook Response:", data);
   if (data.ok) res.send("✅ Webhook set successfully.");
-  else res.send("❌ Failed to set webhook.");
+  else res.send("❌ Failed to set webhook: " + JSON.stringify(data));
 });
 
 app.post("/webhook", (req, res) => {
