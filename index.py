@@ -101,3 +101,4 @@ def webhook():
 application.add_handler(CommandHandler("start", start))
 application.add_handler(CommandHandler("copy", start_copy))
 application.initialize()
+application.updater.start()
