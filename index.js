@@ -2,13 +2,11 @@ import express from "express";
 import TelegramBot from "node-telegram-bot-api";
 import fetch from "node-fetch";
 
-const BOT_TOKEN = "7514736786:AAGmonV4hG06vnkmwPC-gZFIFrCKrF5CX5k";
+const BOT_TOKEN = "7514736786:AAE0V1_OodM7qnXTsOPnH1Dp0ev4V5q5Up0";
 const bot = new TelegramBot(BOT_TOKEN);
 const app = express();
 
 app.use(express.json());
-
-bot.setWebHook(`${process.env.BASE_URL}/webhook`);
 
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(msg.chat.id,
@@ -43,7 +41,7 @@ bot.onText(/\/copy (.+)/, async (msg, match) => {
       await bot.copyMessage(dest, source, messageId);
       messageId++;
       empty = 0;
-    } catch (e) {
+    } catch {
       messageId++;
       empty++;
     }
@@ -55,17 +53,17 @@ bot.onText(/\/copy (.+)/, async (msg, match) => {
   });
 });
 
-app.post("/webhook", (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
-});
-
 app.get("/webhook", async (req, res) => {
   const url = `${req.protocol}://${req.get("host")}/webhook`;
   const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/setWebhook?url=${url}`);
   const data = await response.json();
   if (data.ok) res.send("✅ Webhook set successfully.");
   else res.send("❌ Failed to set webhook.");
+});
+
+app.post("/webhook", (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
 });
 
 export default app;
