@@ -1,8 +1,13 @@
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from flask import Flask, request
+from telegram import Update, Bot
+from telegram.ext import Application, CommandHandler, ContextTypes, Dispatcher
 import asyncio
+import os
 
 BOT_TOKEN = "BOT_TOKEN"
+bot = Bot(token=BOT_TOKEN)
+app = Flask(__name__)
+application = Application.builder().token(BOT_TOKEN).build()
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
@@ -76,8 +81,12 @@ async def start_copy(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_to_message_id=update.message.message_id
     )
 
-app = Application.builder().token(BOT_TOKEN).build()
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("copy", start_copy))
-print("Bot is running...")
-app.run_polling()
+application.add_handler(CommandHandler("start", start))
+application.add_handler(CommandHandler("copy", start_copy))
+dp: Dispatcher = application.dispatcher
+
+@app.route("/", methods=["POST"])
+def webhook():
+    update = Update.de_json(request.get_json(force=True), bot)
+    asyncio.run(dp.process_update(update))
+    return "ok"
