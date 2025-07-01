@@ -1,8 +1,7 @@
 from flask import Flask, request
 from telegram import Update, Bot
-from telegram.ext import Application, CommandHandler, ContextTypes, Dispatcher
+from telegram.ext import Application, CommandHandler, ContextTypes
 import asyncio
-import os
 
 BOT_TOKEN = "7514736786:AAE0V1_OodM7qnXTsOPnH1Dp0ev4V5q5Up0"
 bot = Bot(token=BOT_TOKEN)
@@ -83,10 +82,9 @@ async def start_copy(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 application.add_handler(CommandHandler("start", start))
 application.add_handler(CommandHandler("copy", start_copy))
-dp: Dispatcher = application.dispatcher
 
 @app.route("/", methods=["POST"])
 def webhook():
     update = Update.de_json(request.get_json(force=True), bot)
-    asyncio.run(dp.process_update(update))
+    asyncio.run(application.process_update(update))
     return "ok"
