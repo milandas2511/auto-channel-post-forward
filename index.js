@@ -1,5 +1,6 @@
-const express = require("express");
-const TelegramBot = require("node-telegram-bot-api");
+import express from "express";
+import TelegramBot from "node-telegram-bot-api";
+import fetch from "node-fetch";
 
 const BOT_TOKEN = "7514736786:AAE0V1_OodM7qnXTsOPnH1Dp0ev4V5q5Up0";
 const bot = new TelegramBot(BOT_TOKEN);
@@ -67,4 +68,4 @@ app.get("/webhook", async (req, res) => {
   else res.send("❌ Failed to set webhook.");
 });
 
-module.exports = app;
+export default app;
