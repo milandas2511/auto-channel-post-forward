@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 import asyncio
 
-BOT_TOKEN = "BOT_TOKEN"
+BOT_TOKEN = "7861791032:AAEzLb7ezn65pXKydI_D_yYWX6oCiR004WU"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
